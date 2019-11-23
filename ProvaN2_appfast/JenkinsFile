@@ -4,7 +4,40 @@ pipeline {
         projectWS = "$WORKSPACE/ProvaN2_appfast"
     }
 
-    staes{
-        stage (wrapper)
+    staes {
+        stage('workspace') {
+            steps {
+                echo 'wrapper do gradle'
+                dir("$projectWS") {
+                    sh 'gradle wrapper'
+                }
+            }
+        }
+        stage('Teste') {
+            steps {
+                echo 'Testessssssssssss'
+                dir("$projectWS") {
+                    sh '$projectWS/gradlew test'
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Buildingggggggggg'
+                dir("$projectWS") {
+                    sh '$projectWS/gradlew assembleRelease'
+                }
+            }
+
+            stage('arquivar') {
+                steps {
+                    echo 'guardando em algum lugar que nao sei aonde'
+                    dir("$projectWS") {
+                        sh '$projectWS/gradlew ' archiveArtifacts artifacts: '', fingerprint: true, allowEmptyArchive: false
+
+                    }
+                }
+            }
+        }
     }
 }

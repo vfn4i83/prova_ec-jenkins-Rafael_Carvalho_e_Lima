@@ -1,0 +1,10 @@
+pipeline {
+    agent any
+    environment {
+        projectWS = "$WORKSPACE/ProvaN2_appfast"
+    }
+
+    staes{
+        stage (wrapper)
+    }
+}
